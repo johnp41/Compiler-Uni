@@ -1,0 +1,54 @@
+(*
+Program tha tests math funcs 
+..arctan cant link :| 
+*)
+
+program mathFuncs ;
+var a :real ;
+begin
+
+writeString("Gimme a real ");
+a := readReal();
+
+writeString("neq of it is  ");
+writeReal((-a));
+writeString("\n");
+
+writeString("sin of it is  ");
+writeReal(sin(a));
+writeString("\n");
+
+writeString("cos of it is  ");
+writeReal(cos(a));
+writeString("\n");
+
+writeString("sqr of it is  ");
+writeReal(sqrt(a));
+writeString("\n");
+
+
+writeString("fabs  of  - it is  ");
+writeReal(fabs(-a));
+writeString("\n");
+
+
+
+writeString("exp  of   it is  ");
+writeReal(exp(a));
+writeString("\n");
+
+
+
+
+
+
+
+(*
+
+writeString("arctan  of   it is  ");
+writeReal(arctan(a));
+writeString("\n");
+*)
+
+
+end.

@@ -1,0 +1,13 @@
+program re;
+    var  int : integer ;
+
+    procedure yo (int : integer );
+    begin
+        result := 2 ;
+    end;
+begin
+    if (  'a' <> 'c') then int := 4 
+    else if (true or  not(1=1)) then int :=13 
+    else  while ( 3 <> 3)  do int := 60 
+
+end.

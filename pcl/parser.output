@@ -1,0 +1,3142 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: "program" T_ID ';' body '.'
+
+    2 body: locals block
+
+    3 locals: %empty
+    4       | locals local
+    5       | locals vars
+
+    6 vars: "var" kati1 vars2
+
+    7 vars2: %empty
+    8      | vars2 kati1
+
+    9 local: "label" T_ID kati2 ';'
+   10      | header ';' body ';'
+   11      | "forward" header ';'
+
+   12 kati3: %empty
+   13      | kati3 ',' T_ID
+
+   14 kati1: T_ID kati3 ':' type ';'
+
+   15 kati2: %empty
+   16      | kati2 ',' T_ID
+
+   17 header: "procedure" T_ID '(' kati5 ')'
+   18       | "function" T_ID '(' kati5 ')' ':' type
+
+   19 kati5: %empty
+   20      | formal kati4
+
+   21 kati4: %empty
+   22      | ';' formal kati4
+
+   23 formal: T_ID kati6 ':' type
+   24       | "var" T_ID kati6 ':' type
+
+   25 kati6: %empty
+   26      | kati6 ',' T_ID
+
+   27 type: "integer"
+   28     | "real"
+   29     | "boolean"
+   30     | "char"
+   31     | "array" '[' T_INTEGER ']' "of" type
+   32     | "array" "of" type
+   33     | '^' type
+
+   34 block: "begin" stmt kati8 "end"
+
+   35 kati8: %empty
+   36      | kati8 ';' stmt
+
+   37 stmt: notif
+   38     | withif
+
+   39 notif: %empty
+   40      | lvalue ":=" expr
+   41      | block
+   42      | call
+   43      | "if" expr "then" notif "else" notif
+   44      | "while" expr "do" notif
+   45      | T_ID ':' notif
+   46      | "goto" T_ID
+   47      | "return"
+   48      | "new" '[' expr ']' lvalue
+   49      | "new" lvalue
+   50      | "dispose" lvalue
+   51      | "dispose" '[' ']' lvalue
+
+   52 withif: T_ID ':' withif
+   53       | "while" expr "do" withif
+   54       | "if" expr "then" stmt
+   55       | "if" expr "then" notif "else" withif
+
+   56 expr: lvalue
+   57     | rvalue
+
+   58 lvalue: lvalue_simple
+   59       | lvalue '^'
+   60       | rvalue_simple '^'
+
+   61 lvalue_simple: T_ID
+   62              | "result"
+   63              | T_STRING
+   64              | lvalue_simple '[' lvalue_simple ']'
+   65              | lvalue_simple '[' rvalue ']'
+   66              | '(' lvalue_simple ')'
+
+   67 rvalue: rvalue_simple
+   68       | expr '+' expr
+   69       | expr '-' expr
+   70       | expr '*' expr
+   71       | expr '/' expr
+   72       | expr T_div expr
+   73       | expr T_mod expr
+   74       | expr "or" expr
+   75       | expr T_and expr
+   76       | expr '=' expr
+   77       | expr "<>" expr
+   78       | expr '<' expr
+   79       | expr '>' expr
+   80       | expr "<=" expr
+   81       | expr ">=" expr
+   82       | "not" expr
+   83       | '+' expr
+   84       | '-' expr
+
+   85 rvalue_simple: T_INTEGER
+   86              | "true"
+   87              | "false"
+   88              | T_REAL
+   89              | T_CHAR
+   90              | '(' rvalue ')'
+   91              | "nil"
+   92              | call
+   93              | '@' lvalue_simple
+
+   94 call: T_ID '(' kati13 ')'
+
+   95 kati13: %empty
+   96       | expr kati14
+
+   97 kati14: %empty
+   98       | ',' expr kati14
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'(' (40) 17 18 66 90 94
+')' (41) 17 18 66 90 94
+'*' (42) 70
+'+' (43) 68 83
+',' (44) 13 16 26 98
+'-' (45) 69 84
+'.' (46) 1
+'/' (47) 71
+':' (58) 14 18 23 24 45 52
+';' (59) 1 9 10 11 14 22 36
+'<' (60) 78
+'=' (61) 76
+'>' (62) 79
+'@' (64) 93
+'[' (91) 31 48 51 64 65
+']' (93) 31 48 51 64 65
+'^' (94) 33 59 60
+error (256)
+"array" (258) 31 32
+"begin" (259) 34
+"boolean" (260) 29
+"char" (261) 30
+"dispose" (262) 50 51
+"do" (263) 44 53
+"else" (264) 43 55
+"end" (265) 34
+"false" (266) 87
+"forward" (267) 11
+"function" (268) 18
+"goto" (269) 46
+"if" (270) 43 54 55
+"integer" (271) 27
+"label" (272) 9
+"new" (273) 48 49
+"nil" (274) 91
+"not" (275) 82
+"of" (276) 31 32
+"or" (277) 74
+"procedure" (278) 17
+"program" (279) 1
+"real" (280) 28
+"result" (281) 62
+"return" (282) 47
+"then" (283) 43 54 55
+"true" (284) 86
+"var" (285) 6 24
+"while" (286) 44 53
+"<>" (287) 77
+">=" (288) 81
+"<=" (289) 80
+":=" (290) 40
+T_INTEGER (291) 31 85
+T_ID (292) 1 9 13 14 16 17 18 23 24 26 45 46 52 61 94
+T_REAL (293) 88
+T_CHAR (294) 89
+T_STRING (295) 63
+T_mod (296) 73
+T_div (297) 72
+T_and (298) 75
+UNMINUS (299)
+UNPLUS (300)
+DER (301)
+RE (302)
+ARR (303)
+
+
+Nonterminals, with rules where they appear
+
+$accept (66)
+    on left: 0
+program (67)
+    on left: 1, on right: 0
+body (68)
+    on left: 2, on right: 1 10
+locals (69)
+    on left: 3 4 5, on right: 2 4 5
+vars (70)
+    on left: 6, on right: 5
+vars2 (71)
+    on left: 7 8, on right: 6 8
+local (72)
+    on left: 9 10 11, on right: 4
+kati3 (73)
+    on left: 12 13, on right: 13 14
+kati1 (74)
+    on left: 14, on right: 6 8
+kati2 (75)
+    on left: 15 16, on right: 9 16
+header (76)
+    on left: 17 18, on right: 10 11
+kati5 (77)
+    on left: 19 20, on right: 17 18
+kati4 (78)
+    on left: 21 22, on right: 20 22
+formal (79)
+    on left: 23 24, on right: 20 22
+kati6 (80)
+    on left: 25 26, on right: 23 24 26
+type (81)
+    on left: 27 28 29 30 31 32 33, on right: 14 18 23 24 31 32 33
+block (82)
+    on left: 34, on right: 2 41
+kati8 (83)
+    on left: 35 36, on right: 34 36
+stmt (84)
+    on left: 37 38, on right: 34 36 54
+notif (85)
+    on left: 39 40 41 42 43 44 45 46 47 48 49 50 51, on right: 37 43
+    44 45 55
+withif (86)
+    on left: 52 53 54 55, on right: 38 52 53 55
+expr (87)
+    on left: 56 57, on right: 40 43 44 48 53 54 55 68 69 70 71 72 73
+    74 75 76 77 78 79 80 81 82 83 84 96 98
+lvalue (88)
+    on left: 58 59 60, on right: 40 48 49 50 51 56 59
+lvalue_simple (89)
+    on left: 61 62 63 64 65 66, on right: 58 64 65 66 93
+rvalue (90)
+    on left: 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84,
+    on right: 57 65 90
+rvalue_simple (91)
+    on left: 85 86 87 88 89 90 91 92 93, on right: 60 67
+call (92)
+    on left: 94, on right: 42 92
+kati13 (93)
+    on left: 95 96, on right: 94
+kati14 (94)
+    on left: 97 98, on right: 96 98
+
+
+State 0
+
+    0 $accept: . program $end
+
+    "program"  shift, and go to state 1
+
+    program  go to state 2
+
+
+State 1
+
+    1 program: "program" . T_ID ';' body '.'
+
+    T_ID  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 program: "program" T_ID . ';' body '.'
+
+    ';'  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 5
+
+    1 program: "program" T_ID ';' . body '.'
+
+    $default  reduce using rule 3 (locals)
+
+    body    go to state 6
+    locals  go to state 7
+
+
+State 6
+
+    1 program: "program" T_ID ';' body . '.'
+
+    '.'  shift, and go to state 8
+
+
+State 7
+
+    2 body: locals . block
+    4 locals: locals . local
+    5       | locals . vars
+
+    "begin"      shift, and go to state 9
+    "forward"    shift, and go to state 10
+    "function"   shift, and go to state 11
+    "label"      shift, and go to state 12
+    "procedure"  shift, and go to state 13
+    "var"        shift, and go to state 14
+
+    vars    go to state 15
+    local   go to state 16
+    header  go to state 17
+    block   go to state 18
+
+
+State 8
+
+    1 program: "program" T_ID ';' body '.' .
+
+    $default  reduce using rule 1 (program)
+
+
+State 9
+
+   34 block: "begin" . stmt kati8 "end"
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    stmt           go to state 37
+    notif          go to state 38
+    withif         go to state 39
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 10
+
+   11 local: "forward" . header ';'
+
+    "function"   shift, and go to state 11
+    "procedure"  shift, and go to state 13
+
+    header  go to state 44
+
+
+State 11
+
+   18 header: "function" . T_ID '(' kati5 ')' ':' type
+
+    T_ID  shift, and go to state 45
+
+
+State 12
+
+    9 local: "label" . T_ID kati2 ';'
+
+    T_ID  shift, and go to state 46
+
+
+State 13
+
+   17 header: "procedure" . T_ID '(' kati5 ')'
+
+    T_ID  shift, and go to state 47
+
+
+State 14
+
+    6 vars: "var" . kati1 vars2
+
+    T_ID  shift, and go to state 48
+
+    kati1  go to state 49
+
+
+State 15
+
+    5 locals: locals vars .
+
+    $default  reduce using rule 5 (locals)
+
+
+State 16
+
+    4 locals: locals local .
+
+    $default  reduce using rule 4 (locals)
+
+
+State 17
+
+   10 local: header . ';' body ';'
+
+    ';'  shift, and go to state 50
+
+
+State 18
+
+    2 body: locals block .
+
+    $default  reduce using rule 2 (body)
+
+
+State 19
+
+   50 notif: "dispose" . lvalue
+   51      | "dispose" . '[' ']' lvalue
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '['        shift, and go to state 52
+    '@'        shift, and go to state 35
+
+    lvalue         go to state 53
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 54
+
+
+State 20
+
+   87 rvalue_simple: "false" .
+
+    $default  reduce using rule 87 (rvalue_simple)
+
+
+State 21
+
+   46 notif: "goto" . T_ID
+
+    T_ID  shift, and go to state 55
+
+
+State 22
+
+   43 notif: "if" . expr "then" notif "else" notif
+   54 withif: "if" . expr "then" stmt
+   55       | "if" . expr "then" notif "else" withif
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 59
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 23
+
+   48 notif: "new" . '[' expr ']' lvalue
+   49      | "new" . lvalue
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '['        shift, and go to state 63
+    '@'        shift, and go to state 35
+
+    lvalue         go to state 64
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 54
+
+
+State 24
+
+   91 rvalue_simple: "nil" .
+
+    $default  reduce using rule 91 (rvalue_simple)
+
+
+State 25
+
+   62 lvalue_simple: "result" .
+
+    $default  reduce using rule 62 (lvalue_simple)
+
+
+State 26
+
+   47 notif: "return" .
+
+    $default  reduce using rule 47 (notif)
+
+
+State 27
+
+   86 rvalue_simple: "true" .
+
+    $default  reduce using rule 86 (rvalue_simple)
+
+
+State 28
+
+   44 notif: "while" . expr "do" notif
+   53 withif: "while" . expr "do" withif
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 65
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 29
+
+   85 rvalue_simple: T_INTEGER .
+
+    $default  reduce using rule 85 (rvalue_simple)
+
+
+State 30
+
+   45 notif: T_ID . ':' notif
+   52 withif: T_ID . ':' withif
+   61 lvalue_simple: T_ID .
+   94 call: T_ID . '(' kati13 ')'
+
+    ':'  shift, and go to state 66
+    '('  shift, and go to state 67
+
+    $default  reduce using rule 61 (lvalue_simple)
+
+
+State 31
+
+   88 rvalue_simple: T_REAL .
+
+    $default  reduce using rule 88 (rvalue_simple)
+
+
+State 32
+
+   89 rvalue_simple: T_CHAR .
+
+    $default  reduce using rule 89 (rvalue_simple)
+
+
+State 33
+
+   63 lvalue_simple: T_STRING .
+
+    $default  reduce using rule 63 (lvalue_simple)
+
+
+State 34
+
+   66 lvalue_simple: '(' . lvalue_simple ')'
+   90 rvalue_simple: '(' . rvalue ')'
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 68
+    lvalue         go to state 60
+    lvalue_simple  go to state 69
+    rvalue         go to state 70
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 35
+
+   93 rvalue_simple: '@' . lvalue_simple
+
+    "result"  shift, and go to state 25
+    T_ID      shift, and go to state 71
+    T_STRING  shift, and go to state 33
+    '('       shift, and go to state 72
+
+    lvalue_simple  go to state 73
+
+
+State 36
+
+   41 notif: block .
+
+    $default  reduce using rule 41 (notif)
+
+
+State 37
+
+   34 block: "begin" stmt . kati8 "end"
+
+    $default  reduce using rule 35 (kati8)
+
+    kati8  go to state 74
+
+
+State 38
+
+   37 stmt: notif .
+
+    $default  reduce using rule 37 (stmt)
+
+
+State 39
+
+   38 stmt: withif .
+
+    $default  reduce using rule 38 (stmt)
+
+
+State 40
+
+   40 notif: lvalue . ":=" expr
+   59 lvalue: lvalue . '^'
+
+    ":="  shift, and go to state 75
+    '^'   shift, and go to state 76
+
+
+State 41
+
+   58 lvalue: lvalue_simple .
+   64 lvalue_simple: lvalue_simple . '[' lvalue_simple ']'
+   65              | lvalue_simple . '[' rvalue ']'
+
+    '['  shift, and go to state 77
+
+    $default  reduce using rule 58 (lvalue)
+
+
+State 42
+
+   60 lvalue: rvalue_simple . '^'
+
+    '^'  shift, and go to state 78
+
+
+State 43
+
+   42 notif: call .
+   92 rvalue_simple: call .
+
+    '^'       reduce using rule 92 (rvalue_simple)
+    $default  reduce using rule 42 (notif)
+
+
+State 44
+
+   11 local: "forward" header . ';'
+
+    ';'  shift, and go to state 79
+
+
+State 45
+
+   18 header: "function" T_ID . '(' kati5 ')' ':' type
+
+    '('  shift, and go to state 80
+
+
+State 46
+
+    9 local: "label" T_ID . kati2 ';'
+
+    $default  reduce using rule 15 (kati2)
+
+    kati2  go to state 81
+
+
+State 47
+
+   17 header: "procedure" T_ID . '(' kati5 ')'
+
+    '('  shift, and go to state 82
+
+
+State 48
+
+   14 kati1: T_ID . kati3 ':' type ';'
+
+    $default  reduce using rule 12 (kati3)
+
+    kati3  go to state 83
+
+
+State 49
+
+    6 vars: "var" kati1 . vars2
+
+    $default  reduce using rule 7 (vars2)
+
+    vars2  go to state 84
+
+
+State 50
+
+   10 local: header ';' . body ';'
+
+    $default  reduce using rule 3 (locals)
+
+    body    go to state 85
+    locals  go to state 7
+
+
+State 51
+
+   61 lvalue_simple: T_ID .
+   94 call: T_ID . '(' kati13 ')'
+
+    '('  shift, and go to state 67
+
+    $default  reduce using rule 61 (lvalue_simple)
+
+
+State 52
+
+   51 notif: "dispose" '[' . ']' lvalue
+
+    ']'  shift, and go to state 86
+
+
+State 53
+
+   50 notif: "dispose" lvalue .
+   59 lvalue: lvalue . '^'
+
+    '^'  shift, and go to state 76
+
+    $default  reduce using rule 50 (notif)
+
+
+State 54
+
+   92 rvalue_simple: call .
+
+    $default  reduce using rule 92 (rvalue_simple)
+
+
+State 55
+
+   46 notif: "goto" T_ID .
+
+    $default  reduce using rule 46 (notif)
+
+
+State 56
+
+   82 rvalue: "not" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 87
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 57
+
+   83 rvalue: '+' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 88
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 58
+
+   84 rvalue: '-' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 89
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 59
+
+   43 notif: "if" expr . "then" notif "else" notif
+   54 withif: "if" expr . "then" stmt
+   55       | "if" expr . "then" notif "else" withif
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"    shift, and go to state 90
+    "then"  shift, and go to state 91
+    "<>"    shift, and go to state 92
+    ">="    shift, and go to state 93
+    "<="    shift, and go to state 94
+    '='     shift, and go to state 95
+    '<'     shift, and go to state 96
+    '>'     shift, and go to state 97
+    '+'     shift, and go to state 98
+    '-'     shift, and go to state 99
+    T_mod   shift, and go to state 100
+    '*'     shift, and go to state 101
+    '/'     shift, and go to state 102
+    T_div   shift, and go to state 103
+    T_and   shift, and go to state 104
+
+
+State 60
+
+   56 expr: lvalue .
+   59 lvalue: lvalue . '^'
+
+    '^'  shift, and go to state 76
+
+    $default  reduce using rule 56 (expr)
+
+
+State 61
+
+   57 expr: rvalue .
+
+    $default  reduce using rule 57 (expr)
+
+
+State 62
+
+   60 lvalue: rvalue_simple . '^'
+   67 rvalue: rvalue_simple .
+
+    '^'  shift, and go to state 78
+
+    $default  reduce using rule 67 (rvalue)
+
+
+State 63
+
+   48 notif: "new" '[' . expr ']' lvalue
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 105
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 64
+
+   49 notif: "new" lvalue .
+   59 lvalue: lvalue . '^'
+
+    '^'  shift, and go to state 76
+
+    $default  reduce using rule 49 (notif)
+
+
+State 65
+
+   44 notif: "while" expr . "do" notif
+   53 withif: "while" expr . "do" withif
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "do"   shift, and go to state 106
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+
+State 66
+
+   45 notif: T_ID ':' . notif
+   52 withif: T_ID ':' . withif
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    notif          go to state 107
+    withif         go to state 108
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 67
+
+   94 call: T_ID '(' . kati13 ')'
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 95 (kati13)
+
+    expr           go to state 109
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+    kati13         go to state 110
+
+
+State 68
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+
+State 69
+
+   58 lvalue: lvalue_simple .
+   64 lvalue_simple: lvalue_simple . '[' lvalue_simple ']'
+   65              | lvalue_simple . '[' rvalue ']'
+   66              | '(' lvalue_simple . ')'
+
+    ')'  shift, and go to state 111
+    '['  shift, and go to state 77
+
+    $default  reduce using rule 58 (lvalue)
+
+
+State 70
+
+   57 expr: rvalue .
+   90 rvalue_simple: '(' rvalue . ')'
+
+    ')'  shift, and go to state 112
+
+    $default  reduce using rule 57 (expr)
+
+
+State 71
+
+   61 lvalue_simple: T_ID .
+
+    $default  reduce using rule 61 (lvalue_simple)
+
+
+State 72
+
+   66 lvalue_simple: '(' . lvalue_simple ')'
+
+    "result"  shift, and go to state 25
+    T_ID      shift, and go to state 71
+    T_STRING  shift, and go to state 33
+    '('       shift, and go to state 72
+
+    lvalue_simple  go to state 113
+
+
+State 73
+
+   64 lvalue_simple: lvalue_simple . '[' lvalue_simple ']'
+   65              | lvalue_simple . '[' rvalue ']'
+   93 rvalue_simple: '@' lvalue_simple .
+
+    '['  shift, and go to state 77
+
+    $default  reduce using rule 93 (rvalue_simple)
+
+
+State 74
+
+   34 block: "begin" stmt kati8 . "end"
+   36 kati8: kati8 . ';' stmt
+
+    "end"  shift, and go to state 114
+    ';'    shift, and go to state 115
+
+
+State 75
+
+   40 notif: lvalue ":=" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 116
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 76
+
+   59 lvalue: lvalue '^' .
+
+    $default  reduce using rule 59 (lvalue)
+
+
+State 77
+
+   64 lvalue_simple: lvalue_simple '[' . lvalue_simple ']'
+   65              | lvalue_simple '[' . rvalue ']'
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 68
+    lvalue         go to state 60
+    lvalue_simple  go to state 117
+    rvalue         go to state 118
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 78
+
+   60 lvalue: rvalue_simple '^' .
+
+    $default  reduce using rule 60 (lvalue)
+
+
+State 79
+
+   11 local: "forward" header ';' .
+
+    $default  reduce using rule 11 (local)
+
+
+State 80
+
+   18 header: "function" T_ID '(' . kati5 ')' ':' type
+
+    "var"  shift, and go to state 119
+    T_ID   shift, and go to state 120
+
+    $default  reduce using rule 19 (kati5)
+
+    kati5   go to state 121
+    formal  go to state 122
+
+
+State 81
+
+    9 local: "label" T_ID kati2 . ';'
+   16 kati2: kati2 . ',' T_ID
+
+    ';'  shift, and go to state 123
+    ','  shift, and go to state 124
+
+
+State 82
+
+   17 header: "procedure" T_ID '(' . kati5 ')'
+
+    "var"  shift, and go to state 119
+    T_ID   shift, and go to state 120
+
+    $default  reduce using rule 19 (kati5)
+
+    kati5   go to state 125
+    formal  go to state 122
+
+
+State 83
+
+   13 kati3: kati3 . ',' T_ID
+   14 kati1: T_ID kati3 . ':' type ';'
+
+    ','  shift, and go to state 126
+    ':'  shift, and go to state 127
+
+
+State 84
+
+    6 vars: "var" kati1 vars2 .
+    8 vars2: vars2 . kati1
+
+    T_ID  shift, and go to state 48
+
+    $default  reduce using rule 6 (vars)
+
+    kati1  go to state 128
+
+
+State 85
+
+   10 local: header ';' body . ';'
+
+    ';'  shift, and go to state 129
+
+
+State 86
+
+   51 notif: "dispose" '[' ']' . lvalue
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    lvalue         go to state 130
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 54
+
+
+State 87
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   82       | "not" expr .
+
+    $default  reduce using rule 82 (rvalue)
+
+
+State 88
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   83       | '+' expr .
+
+    $default  reduce using rule 83 (rvalue)
+
+
+State 89
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   84       | '-' expr .
+
+    $default  reduce using rule 84 (rvalue)
+
+
+State 90
+
+   74 rvalue: expr "or" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 131
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 91
+
+   43 notif: "if" expr "then" . notif "else" notif
+   54 withif: "if" expr "then" . stmt
+   55       | "if" expr "then" . notif "else" withif
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    stmt           go to state 132
+    notif          go to state 133
+    withif         go to state 39
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 92
+
+   77 rvalue: expr "<>" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 134
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 93
+
+   81 rvalue: expr ">=" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 135
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 94
+
+   80 rvalue: expr "<=" . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 136
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 95
+
+   76 rvalue: expr '=' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 137
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 96
+
+   78 rvalue: expr '<' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 138
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 97
+
+   79 rvalue: expr '>' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 139
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 98
+
+   68 rvalue: expr '+' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 140
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 99
+
+   69 rvalue: expr '-' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 141
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 100
+
+   73 rvalue: expr T_mod . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 142
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 101
+
+   70 rvalue: expr '*' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 143
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 102
+
+   71 rvalue: expr '/' . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 144
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 103
+
+   72 rvalue: expr T_div . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 145
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 104
+
+   75 rvalue: expr T_and . expr
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 146
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 105
+
+   48 notif: "new" '[' expr . ']' lvalue
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+    ']'    shift, and go to state 147
+
+
+State 106
+
+   44 notif: "while" expr "do" . notif
+   53 withif: "while" expr "do" . withif
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    notif          go to state 148
+    withif         go to state 149
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 107
+
+   45 notif: T_ID ':' notif .
+
+    $default  reduce using rule 45 (notif)
+
+
+State 108
+
+   52 withif: T_ID ':' withif .
+
+    $default  reduce using rule 52 (withif)
+
+
+State 109
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   96 kati13: expr . kati14
+
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+    ','    shift, and go to state 150
+
+    $default  reduce using rule 97 (kati14)
+
+    kati14  go to state 151
+
+
+State 110
+
+   94 call: T_ID '(' kati13 . ')'
+
+    ')'  shift, and go to state 152
+
+
+State 111
+
+   66 lvalue_simple: '(' lvalue_simple ')' .
+
+    $default  reduce using rule 66 (lvalue_simple)
+
+
+State 112
+
+   90 rvalue_simple: '(' rvalue ')' .
+
+    $default  reduce using rule 90 (rvalue_simple)
+
+
+State 113
+
+   64 lvalue_simple: lvalue_simple . '[' lvalue_simple ']'
+   65              | lvalue_simple . '[' rvalue ']'
+   66              | '(' lvalue_simple . ')'
+
+    ')'  shift, and go to state 111
+    '['  shift, and go to state 77
+
+
+State 114
+
+   34 block: "begin" stmt kati8 "end" .
+
+    $default  reduce using rule 34 (block)
+
+
+State 115
+
+   36 kati8: kati8 ';' . stmt
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    stmt           go to state 153
+    notif          go to state 38
+    withif         go to state 39
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 116
+
+   40 notif: lvalue ":=" expr .
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    $default  reduce using rule 40 (notif)
+
+
+State 117
+
+   58 lvalue: lvalue_simple .
+   64 lvalue_simple: lvalue_simple . '[' lvalue_simple ']'
+   64              | lvalue_simple '[' lvalue_simple . ']'
+   65              | lvalue_simple . '[' rvalue ']'
+
+    '['  shift, and go to state 77
+    ']'  shift, and go to state 154
+
+    $default  reduce using rule 58 (lvalue)
+
+
+State 118
+
+   57 expr: rvalue .
+   65 lvalue_simple: lvalue_simple '[' rvalue . ']'
+
+    ']'  shift, and go to state 155
+
+    $default  reduce using rule 57 (expr)
+
+
+State 119
+
+   24 formal: "var" . T_ID kati6 ':' type
+
+    T_ID  shift, and go to state 156
+
+
+State 120
+
+   23 formal: T_ID . kati6 ':' type
+
+    $default  reduce using rule 25 (kati6)
+
+    kati6  go to state 157
+
+
+State 121
+
+   18 header: "function" T_ID '(' kati5 . ')' ':' type
+
+    ')'  shift, and go to state 158
+
+
+State 122
+
+   20 kati5: formal . kati4
+
+    ';'  shift, and go to state 159
+
+    $default  reduce using rule 21 (kati4)
+
+    kati4  go to state 160
+
+
+State 123
+
+    9 local: "label" T_ID kati2 ';' .
+
+    $default  reduce using rule 9 (local)
+
+
+State 124
+
+   16 kati2: kati2 ',' . T_ID
+
+    T_ID  shift, and go to state 161
+
+
+State 125
+
+   17 header: "procedure" T_ID '(' kati5 . ')'
+
+    ')'  shift, and go to state 162
+
+
+State 126
+
+   13 kati3: kati3 ',' . T_ID
+
+    T_ID  shift, and go to state 163
+
+
+State 127
+
+   14 kati1: T_ID kati3 ':' . type ';'
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 170
+
+
+State 128
+
+    8 vars2: vars2 kati1 .
+
+    $default  reduce using rule 8 (vars2)
+
+
+State 129
+
+   10 local: header ';' body ';' .
+
+    $default  reduce using rule 10 (local)
+
+
+State 130
+
+   51 notif: "dispose" '[' ']' lvalue .
+   59 lvalue: lvalue . '^'
+
+    '^'  shift, and go to state 76
+
+    $default  reduce using rule 51 (notif)
+
+
+State 131
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   74       | expr "or" expr .
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    $default  reduce using rule 74 (rvalue)
+
+
+State 132
+
+   54 withif: "if" expr "then" stmt .
+
+    $default  reduce using rule 54 (withif)
+
+
+State 133
+
+   37 stmt: notif .
+   43 notif: "if" expr "then" notif . "else" notif
+   55 withif: "if" expr "then" notif . "else" withif
+
+    "else"  shift, and go to state 171
+
+    $default  reduce using rule 37 (stmt)
+
+
+State 134
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   77       | expr "<>" expr .
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 77 (rvalue)
+
+
+State 135
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   81       | expr ">=" expr .
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 81 (rvalue)
+
+
+State 136
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   80       | expr "<=" expr .
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 80 (rvalue)
+
+
+State 137
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   76       | expr '=' expr .
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 76 (rvalue)
+
+
+State 138
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   78       | expr '<' expr .
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 78 (rvalue)
+
+
+State 139
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   79       | expr '>' expr .
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    "or"   shift, and go to state 90
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    "<>"  error (nonassociative)
+    ">="  error (nonassociative)
+    "<="  error (nonassociative)
+    '='   error (nonassociative)
+    '<'   error (nonassociative)
+    '>'   error (nonassociative)
+
+    $default  reduce using rule 79 (rvalue)
+
+
+State 140
+
+   68 rvalue: expr . '+' expr
+   68       | expr '+' expr .
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    $default  reduce using rule 68 (rvalue)
+
+
+State 141
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   69       | expr '-' expr .
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+
+    $default  reduce using rule 69 (rvalue)
+
+
+State 142
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   73       | expr T_mod expr .
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    $default  reduce using rule 73 (rvalue)
+
+
+State 143
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   70       | expr '*' expr .
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    $default  reduce using rule 70 (rvalue)
+
+
+State 144
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   71       | expr '/' expr .
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    $default  reduce using rule 71 (rvalue)
+
+
+State 145
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   72       | expr T_div expr .
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    $default  reduce using rule 72 (rvalue)
+
+
+State 146
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   75       | expr T_and expr .
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+
+    $default  reduce using rule 75 (rvalue)
+
+
+State 147
+
+   48 notif: "new" '[' expr ']' . lvalue
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    lvalue         go to state 172
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 54
+
+
+State 148
+
+   44 notif: "while" expr "do" notif .
+
+    $default  reduce using rule 44 (notif)
+
+
+State 149
+
+   53 withif: "while" expr "do" withif .
+
+    $default  reduce using rule 53 (withif)
+
+
+State 150
+
+   98 kati14: ',' . expr kati14
+
+    "false"    shift, and go to state 20
+    "nil"      shift, and go to state 24
+    "not"      shift, and go to state 56
+    "result"   shift, and go to state 25
+    "true"     shift, and go to state 27
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 51
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '+'        shift, and go to state 57
+    '-'        shift, and go to state 58
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    expr           go to state 173
+    lvalue         go to state 60
+    lvalue_simple  go to state 41
+    rvalue         go to state 61
+    rvalue_simple  go to state 62
+    call           go to state 54
+
+
+State 151
+
+   96 kati13: expr kati14 .
+
+    $default  reduce using rule 96 (kati13)
+
+
+State 152
+
+   94 call: T_ID '(' kati13 ')' .
+
+    $default  reduce using rule 94 (call)
+
+
+State 153
+
+   36 kati8: kati8 ';' stmt .
+
+    $default  reduce using rule 36 (kati8)
+
+
+State 154
+
+   64 lvalue_simple: lvalue_simple '[' lvalue_simple ']' .
+
+    $default  reduce using rule 64 (lvalue_simple)
+
+
+State 155
+
+   65 lvalue_simple: lvalue_simple '[' rvalue ']' .
+
+    $default  reduce using rule 65 (lvalue_simple)
+
+
+State 156
+
+   24 formal: "var" T_ID . kati6 ':' type
+
+    $default  reduce using rule 25 (kati6)
+
+    kati6  go to state 174
+
+
+State 157
+
+   23 formal: T_ID kati6 . ':' type
+   26 kati6: kati6 . ',' T_ID
+
+    ','  shift, and go to state 175
+    ':'  shift, and go to state 176
+
+
+State 158
+
+   18 header: "function" T_ID '(' kati5 ')' . ':' type
+
+    ':'  shift, and go to state 177
+
+
+State 159
+
+   22 kati4: ';' . formal kati4
+
+    "var"  shift, and go to state 119
+    T_ID   shift, and go to state 120
+
+    formal  go to state 178
+
+
+State 160
+
+   20 kati5: formal kati4 .
+
+    $default  reduce using rule 20 (kati5)
+
+
+State 161
+
+   16 kati2: kati2 ',' T_ID .
+
+    $default  reduce using rule 16 (kati2)
+
+
+State 162
+
+   17 header: "procedure" T_ID '(' kati5 ')' .
+
+    $default  reduce using rule 17 (header)
+
+
+State 163
+
+   13 kati3: kati3 ',' T_ID .
+
+    $default  reduce using rule 13 (kati3)
+
+
+State 164
+
+   31 type: "array" . '[' T_INTEGER ']' "of" type
+   32     | "array" . "of" type
+
+    "of"  shift, and go to state 179
+    '['   shift, and go to state 180
+
+
+State 165
+
+   29 type: "boolean" .
+
+    $default  reduce using rule 29 (type)
+
+
+State 166
+
+   30 type: "char" .
+
+    $default  reduce using rule 30 (type)
+
+
+State 167
+
+   27 type: "integer" .
+
+    $default  reduce using rule 27 (type)
+
+
+State 168
+
+   28 type: "real" .
+
+    $default  reduce using rule 28 (type)
+
+
+State 169
+
+   33 type: '^' . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 181
+
+
+State 170
+
+   14 kati1: T_ID kati3 ':' type . ';'
+
+    ';'  shift, and go to state 182
+
+
+State 171
+
+   43 notif: "if" expr "then" notif "else" . notif
+   55 withif: "if" expr "then" notif "else" . withif
+
+    "begin"    shift, and go to state 9
+    "dispose"  shift, and go to state 19
+    "false"    shift, and go to state 20
+    "goto"     shift, and go to state 21
+    "if"       shift, and go to state 22
+    "new"      shift, and go to state 23
+    "nil"      shift, and go to state 24
+    "result"   shift, and go to state 25
+    "return"   shift, and go to state 26
+    "true"     shift, and go to state 27
+    "while"    shift, and go to state 28
+    T_INTEGER  shift, and go to state 29
+    T_ID       shift, and go to state 30
+    T_REAL     shift, and go to state 31
+    T_CHAR     shift, and go to state 32
+    T_STRING   shift, and go to state 33
+    '('        shift, and go to state 34
+    '@'        shift, and go to state 35
+
+    $default  reduce using rule 39 (notif)
+
+    block          go to state 36
+    notif          go to state 183
+    withif         go to state 184
+    lvalue         go to state 40
+    lvalue_simple  go to state 41
+    rvalue_simple  go to state 42
+    call           go to state 43
+
+
+State 172
+
+   48 notif: "new" '[' expr ']' lvalue .
+   59 lvalue: lvalue . '^'
+
+    '^'  shift, and go to state 76
+
+    $default  reduce using rule 48 (notif)
+
+
+State 173
+
+   68 rvalue: expr . '+' expr
+   69       | expr . '-' expr
+   70       | expr . '*' expr
+   71       | expr . '/' expr
+   72       | expr . T_div expr
+   73       | expr . T_mod expr
+   74       | expr . "or" expr
+   75       | expr . T_and expr
+   76       | expr . '=' expr
+   77       | expr . "<>" expr
+   78       | expr . '<' expr
+   79       | expr . '>' expr
+   80       | expr . "<=" expr
+   81       | expr . ">=" expr
+   98 kati14: ',' expr . kati14
+
+    "or"   shift, and go to state 90
+    "<>"   shift, and go to state 92
+    ">="   shift, and go to state 93
+    "<="   shift, and go to state 94
+    '='    shift, and go to state 95
+    '<'    shift, and go to state 96
+    '>'    shift, and go to state 97
+    '+'    shift, and go to state 98
+    '-'    shift, and go to state 99
+    T_mod  shift, and go to state 100
+    '*'    shift, and go to state 101
+    '/'    shift, and go to state 102
+    T_div  shift, and go to state 103
+    T_and  shift, and go to state 104
+    ','    shift, and go to state 150
+
+    $default  reduce using rule 97 (kati14)
+
+    kati14  go to state 185
+
+
+State 174
+
+   24 formal: "var" T_ID kati6 . ':' type
+   26 kati6: kati6 . ',' T_ID
+
+    ','  shift, and go to state 175
+    ':'  shift, and go to state 186
+
+
+State 175
+
+   26 kati6: kati6 ',' . T_ID
+
+    T_ID  shift, and go to state 187
+
+
+State 176
+
+   23 formal: T_ID kati6 ':' . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 188
+
+
+State 177
+
+   18 header: "function" T_ID '(' kati5 ')' ':' . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 189
+
+
+State 178
+
+   22 kati4: ';' formal . kati4
+
+    ';'  shift, and go to state 159
+
+    $default  reduce using rule 21 (kati4)
+
+    kati4  go to state 190
+
+
+State 179
+
+   32 type: "array" "of" . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 191
+
+
+State 180
+
+   31 type: "array" '[' . T_INTEGER ']' "of" type
+
+    T_INTEGER  shift, and go to state 192
+
+
+State 181
+
+   33 type: '^' type .
+
+    $default  reduce using rule 33 (type)
+
+
+State 182
+
+   14 kati1: T_ID kati3 ':' type ';' .
+
+    $default  reduce using rule 14 (kati1)
+
+
+State 183
+
+   43 notif: "if" expr "then" notif "else" notif .
+
+    $default  reduce using rule 43 (notif)
+
+
+State 184
+
+   55 withif: "if" expr "then" notif "else" withif .
+
+    $default  reduce using rule 55 (withif)
+
+
+State 185
+
+   98 kati14: ',' expr kati14 .
+
+    $default  reduce using rule 98 (kati14)
+
+
+State 186
+
+   24 formal: "var" T_ID kati6 ':' . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 193
+
+
+State 187
+
+   26 kati6: kati6 ',' T_ID .
+
+    $default  reduce using rule 26 (kati6)
+
+
+State 188
+
+   23 formal: T_ID kati6 ':' type .
+
+    $default  reduce using rule 23 (formal)
+
+
+State 189
+
+   18 header: "function" T_ID '(' kati5 ')' ':' type .
+
+    $default  reduce using rule 18 (header)
+
+
+State 190
+
+   22 kati4: ';' formal kati4 .
+
+    $default  reduce using rule 22 (kati4)
+
+
+State 191
+
+   32 type: "array" "of" type .
+
+    $default  reduce using rule 32 (type)
+
+
+State 192
+
+   31 type: "array" '[' T_INTEGER . ']' "of" type
+
+    ']'  shift, and go to state 194
+
+
+State 193
+
+   24 formal: "var" T_ID kati6 ':' type .
+
+    $default  reduce using rule 24 (formal)
+
+
+State 194
+
+   31 type: "array" '[' T_INTEGER ']' . "of" type
+
+    "of"  shift, and go to state 195
+
+
+State 195
+
+   31 type: "array" '[' T_INTEGER ']' "of" . type
+
+    "array"    shift, and go to state 164
+    "boolean"  shift, and go to state 165
+    "char"     shift, and go to state 166
+    "integer"  shift, and go to state 167
+    "real"     shift, and go to state 168
+    '^'        shift, and go to state 169
+
+    type  go to state 196
+
+
+State 196
+
+   31 type: "array" '[' T_INTEGER ']' "of" type .
+
+    $default  reduce using rule 31 (type)

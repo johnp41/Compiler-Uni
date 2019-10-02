@@ -1,0 +1,26 @@
+program hi ;
+
+var a : ^array of char ;
+var b : array[2] of char;
+var m  : array of char ;
+begin
+
+b :="D";
+writeString(b);
+
+
+ a := @"abcdf" ; 
+ m := a^ ;
+
+ writeString(a^);
+ writeChar(m[1]);
+ writeString("\n");
+ writeString("\n");
+ writeString("\n");
+m[1] := '2' ;
+writeString(m) ;
+writeString("\n");
+writeString(a^) ;
+
+
+end.

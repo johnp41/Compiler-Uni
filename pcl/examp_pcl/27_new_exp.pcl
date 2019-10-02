@@ -1,0 +1,11 @@
+program hi ;
+var a : ^array of integer ;
+var b : ^integer;
+begin
+
+ (* new [3] a  ; *)
+b^ := 3 ;
+
+dispose b;
+
+end.

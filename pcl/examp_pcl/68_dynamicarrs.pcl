@@ -1,0 +1,20 @@
+
+program dynamicarrs ;
+
+var ar : array of ^integer ;
+var ar_ptr : ^ array of ^integer;
+begin
+
+new [5] ar_ptr ;
+
+
+ar := ar_ptr^ ;
+(*
+new ar_ptr^[1]; * ) (* not accepted by lexer *)
+new ar[1] ;
+
+ar[1]^ := 3 ;
+
+writeInteger(ar[1]^);
+
+end.

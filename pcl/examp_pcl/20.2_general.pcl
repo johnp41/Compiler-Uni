@@ -1,0 +1,21 @@
+program hello ;
+
+forward function add (a : integer ; b :integer ) : integer ;
+
+function multipl  (x :integer ) : integer ;
+	function inside (in : integer) : integer ;
+	begin
+	end;   
+begin
+add (2 , 2) ;
+inside(2);
+result := inside(3) ;
+end;
+
+
+function add(a :integer ; b: integer) : integer ;
+begin
+end ;
+
+begin
+end.

@@ -1,0 +1,18 @@
+program  hello ;
+var number  : integer;
+var number2 : real ;
+label  ko ;
+procedure jo (yo : integer);
+  procedure jiji (yin :integer)  ;
+  var propo :integer;
+  begin
+    yin := 1000; 
+    propo := 42;
+    number := 67;
+    end;
+begin 
+
+end;
+begin
+number := 2 ;
+end.

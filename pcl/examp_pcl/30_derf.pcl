@@ -1,0 +1,9 @@
+program hi ;
+var a : char ;
+var b : ^char ;
+begin
+
+a := 'a' ;
+b := @ a ;
+
+end.

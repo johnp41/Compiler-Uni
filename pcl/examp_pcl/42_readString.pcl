@@ -1,0 +1,20 @@
+program hi ;
+
+var ar : ^array of char ;
+var b : array  of char ;
+var ar42 : array [4] of char ;
+var ar2 : ^array of char ;
+begin
+
+
+ar42 := "433" ;
+ar42[1] := 'C' ;
+(* writeString(ar42); *)
+
+ new [1] ar ;
+
+b := ar^ ; 
+readString(3  , ar42) ; 
+writeString(ar42);
+
+end.

@@ -1,0 +1,5 @@
+program hello ;
+var number : integer;
+label  number  ;
+begin 
+end.

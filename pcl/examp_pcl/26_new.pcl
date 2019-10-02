@@ -1,0 +1,7 @@
+program hi ;
+var a : ^integer ;
+begin
+
+new a ;
+
+end.

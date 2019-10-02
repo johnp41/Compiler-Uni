@@ -1,0 +1,10 @@
+program re ;
+var int : ^integer ;
+var int2 : ^^char ;
+
+begin
+
+new int ;
+new int2 ;
+
+end.

@@ -1,0 +1,32 @@
+program hi ;
+
+var i : real ;
+
+procedure get_A_real(var a : real);
+begin
+
+a := a + 4 ;
+
+a:= 5 * a ;
+
+writeReal(a);
+writeString("\n");
+a := a / 5 ;
+writeString("\n");
+writeReal(a);
+
+writeString("i made some changes\n ");
+writeReal(a);
+
+end;
+
+
+
+begin
+
+writeString("gimme some int\n");
+i := readReal() ;
+get_A_real(i);
+writeReal(i);
+
+end.

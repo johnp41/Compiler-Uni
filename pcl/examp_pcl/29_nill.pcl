@@ -1,0 +1,8 @@
+program hi ;
+var a : ^^char;
+
+begin
+
+a := nil ;
+
+end.

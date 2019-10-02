@@ -1,0 +1,84 @@
+(*
+    A program that test nested functions and local vars
+
+    output should be  :
+
+    x y z  1 2 3
+    k m n  3 4 6 
+    a b c  4 6 9 
+    k m n  4 4 6 
+    x y z  1 2 4
+
+*)
+
+
+program Xalasia ;
+
+var x,y,z : integer ;
+procedure Xaos (k , m : integer ; var n : integer );
+    procedure Xalasia(var a : integer ; b,c : integer );
+    begin
+        a := b ;
+        b := a +2 ;
+        c := a + 5 ;
+        writeString("a , b ,c ") ;
+        writeInteger(a);
+        writeString(" ");
+        writeInteger(b);
+        writeString(" ");
+        writeInteger(c);
+        writeString(" ");
+        writeString("\n");
+    end;
+
+    begin
+        k := m + 1 ;
+        m := m + 2 ;
+        n := k + 3 ;
+        writeString("k , m ,n ") ;
+        writeInteger(k);
+        writeString(" ");
+        writeInteger(m);
+        writeString(" ");
+        writeInteger(n);
+        writeString("\n") ;
+
+        Xalasia(k,m,n);
+
+        writeString("k , m ,n ") ;
+        writeInteger(k);
+        writeString(" ");
+        writeInteger(m);
+        writeString(" ");
+        writeInteger(n);
+        writeString("\n")
+
+    end;
+
+begin
+    x := 1 ;
+    y := 2 ;
+    z := 3 ;
+
+
+    writeString("x , y ,z ") ;
+    writeInteger(x);
+    writeString(" ");
+    writeInteger(y);
+    writeString(" ");
+    writeInteger(z);
+    writeString("\n");
+
+    Xaos(x,y,z);
+
+    writeString("x , y ,z ") ;
+    writeInteger(x);
+    writeString(" ");
+    writeInteger(y);
+    writeString(" ");
+    writeInteger(z);
+    writeString("\n");
+
+
+
+end.

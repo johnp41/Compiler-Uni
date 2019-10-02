@@ -1,0 +1,13 @@
+program hi ;
+var a :  array[5] of char ;
+var d :  array[4] of integer ;
+var b : ^ char ;
+begin
+
+
+d[1] := 0 ;
+writeInteger(d[1]) ;
+ a := "adsa" ;
+writeString(a);  
+
+end.

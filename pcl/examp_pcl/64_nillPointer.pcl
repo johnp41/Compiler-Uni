@@ -1,0 +1,22 @@
+program exPointers;
+var
+   iptr: ^integer;
+
+
+
+
+
+
+
+begin
+    iptr := nil;
+   
+ 
+
+    
+    if(iptr <> nil ) then  writeString("Ptr is  not nil");
+    if(iptr = nil) then writeString("Ptr is  nil");
+
+   
+
+end.

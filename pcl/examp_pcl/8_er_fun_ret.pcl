@@ -1,0 +1,14 @@
+program hello ;
+var number : integer;
+var number2 : real ;
+
+function  noting (n : real) : real ;
+begin
+result := false (* edw xtupaei *)
+end ;
+
+
+
+(* Main program *)
+begin
+end .

@@ -1,0 +1,9 @@
+{
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.loggingLevel": "Error",
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
+    "C_Cpp.errorSquiggles": "Enabled",
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}

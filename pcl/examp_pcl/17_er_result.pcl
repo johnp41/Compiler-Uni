@@ -1,0 +1,24 @@
+program hello ;
+
+forward   procedure p0 (zok : integer ) ;
+
+procedure p1(zok : real);
+var yo: integer;
+begin
+yo := 100 ; 
+(* p0(2) *)  (* den to xtypouse gia kapoio logo *)
+end;
+
+
+procedure p0 (zok : integer );
+begin
+zok := 3 ;
+end;
+
+function addi (i : integer) : integer;
+begin
+(* result := 2; *)
+end;
+
+begin
+end.

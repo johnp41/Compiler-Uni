@@ -1,0 +1,28 @@
+program hello ;
+    
+   var a : integer ;
+   var q : ^array of integer ;
+   var w : array [2] of integer ; 
+ 
+
+    function zoo(var x : integer  ) : real ;
+    var z : integer ;
+    begin 
+       (* x := x ; *)
+          x := x div 100 ;   
+         writeInteger(x); 
+        result := 2.43 ;
+    end;
+
+
+
+begin 
+    a := 2 ;
+  (*  writeInteger(a); *)
+   zoo(a); 
+   writeInteger(a); 
+
+
+   
+
+end.

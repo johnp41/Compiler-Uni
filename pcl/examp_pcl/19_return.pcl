@@ -1,0 +1,25 @@
+program hello ;
+
+(* forward   procedure p0 (zok : integer ) ; *)
+
+procedure p2();
+	var	yo :integer ;
+		procedure p0 (zok : integer );
+		begin
+		return ;
+		zok := 33 ;	
+		end;
+begin
+yo := 19
+end;
+
+
+function mul(ar : integer) : integer ;
+begin
+ar := 34 ; 
+result := 2010 ;
+return 
+end;
+
+begin
+end.

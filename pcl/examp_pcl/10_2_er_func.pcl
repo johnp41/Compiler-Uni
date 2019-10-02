@@ -1,0 +1,32 @@
+program hello ;
+    var z : real ;
+    forward function zoo (x : integer ) : real ;
+
+    function foo(x,y,z : real) : real  ;
+    var yo : real ;
+    begin
+        yo := 2 ;
+        result := x + y + z + yo + zoo( 2) ; 
+    end;
+
+    function zoo(x : integer ) : real ;
+    begin 
+        result := 2.43 ;
+    end;
+
+    forward function foo2 ( x : integer ) : integer ;
+
+    function zoo2( x : integer) :integer ;
+    var z : integer ; 
+    begin
+        z:= 2 ;
+        z := foo2(5) +2;
+    end;
+
+    function foo2(x : integer) : integer ;
+   (* var z : integer; *)
+    begin
+        result := 2 + x  + z;
+    end;
+begin 
+end.

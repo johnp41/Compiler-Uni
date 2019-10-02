@@ -1,0 +1,32 @@
+program so ;
+var ar : ^array of char ;
+var length : integer ;
+
+procedure change (var ar : array of char);
+begin
+
+    ar[0] := 'O' ;
+
+end;
+
+
+
+begin
+
+writeString("Gimme a Last-name and i am gonna change it \n");
+writeString("But First ...gimme the length of it \n");
+
+length := readInteger();
+
+writeString("now gimme the last name \n ");
+
+new [(length + 1 )] ar ;
+
+readString(length ,ar^) ;
+
+change(ar^);
+
+writeString(ar^);
+
+
+end.

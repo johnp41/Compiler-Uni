@@ -1,0 +1,8 @@
+program  hello ;
+label c ;
+var y,dsf,fadf,fs : integer;
+var yfdsaf : real ;
+label tr  ;
+begin
+fs :=  3 ;
+end.

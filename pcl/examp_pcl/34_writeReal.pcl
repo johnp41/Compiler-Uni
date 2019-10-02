@@ -1,0 +1,13 @@
+program hi ;
+
+var flag : boolean ;
+
+begin
+
+flag := false ;
+if  ( flag ) then 
+    writeReal(2.345534)
+else 
+     writeReal(318.0324);
+
+end.

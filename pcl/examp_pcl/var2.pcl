@@ -1,0 +1,6 @@
+program  hello ;
+var  number : ^integer ; 
+begin
+new number; 
+number^ := 2 ;
+end.

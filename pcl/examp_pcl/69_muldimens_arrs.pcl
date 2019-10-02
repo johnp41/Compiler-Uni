@@ -1,0 +1,19 @@
+program multiple_dimension arr;
+
+var ar_ptr : ^ array of array of integer ;
+var z :array of  array of integer ;
+var ar_ptr2 : ^ array of integer ;
+
+begin
+    new [3] ar_ptr ;
+
+    z := ar_ptr^ ;
+
+    new [3] ar_ptr2;
+
+    z[1] := ar_ptr2^;
+
+    z[1][1] := 3;
+
+    writeInteger(z[1][1]);
+end.

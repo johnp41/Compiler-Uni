@@ -1,0 +1,15 @@
+program re ;
+var int : ^integer ;
+var int2 : ^^char ;
+var arr : ^array of ^real ;
+
+begin
+
+new int ;
+new int2^ ;
+new [5] arr ;
+
+
+dispose  int ;
+dispose [] arr ;
+end.

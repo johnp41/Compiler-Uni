@@ -1,0 +1,70 @@
+program hello ;
+var number : integer;
+var number2 : real ;
+var derf2 :  ^real ;
+var derf : ^integer ;
+var pointer : ^char ;
+var nega : array [2] of real ;
+var point_bool : ^boolean ;
+var flag : boolean ;
+
+function foo (number : real) : integer ;
+begin 
+number :=   number + 1 * 2 -  54352 + - ( 423 + 1.432 )   ; 
+number := 2.432 ;
+number := 3 ;
+result := 5 ; 
+end;
+
+function  noting (n : real) : real ;
+begin
+derf := @ number ;
+result := ( 2.4365346 );
+end ;
+
+
+
+function  mul (m : integer) : boolean ;
+    var flag :boolean ;
+    var ch : char ;
+
+    function  noting (n : real) : char ;
+    begin
+    result := 'c'
+    end ;
+
+begin
+flag := true ;
+m    := m + 1 ; 
+derf := @ number ;
+ch   := noting(2); 
+pointer := @ ch ;
+result := flag 
+end ;
+
+
+(* Main program *)
+begin
+
+    (* real    integer *)
+    derf2 := @number ;
+    nega[1] := -22 ;
+    number := +----+2 (*  hmmmmmmm *) ;
+    point_bool^ := not mul(5) ;
+    
+    (* real             integer *)
+
+    derf2^ := foo(2) * number ;
+    derf2^ := (((foo(2) * number ) + 2) / 2 ) * 4 ; 
+    derf^ := foo(2) * 2 ;
+    derf^ := ( foo(2+32) + 4 * 3 ) div 3 ;
+    point_bool^ :=  number <> ( number + 2 ) ;  
+    (* prepei na einai arithmetix o tups*)
+    point_bool^ :=  2 <> 3.56 ;
+    point_bool^ :=  derf2 = @number2 ;
+    flag := ( (3213 + foo (234/32.2) )  >  foo(nega[1]) ) ;
+    flag := true or false ;
+    flag :=  (( true or false ) or true ) and (( 5 >2) or (5 = foo(23 mod 5))  )  ;  
+   
+
+end .

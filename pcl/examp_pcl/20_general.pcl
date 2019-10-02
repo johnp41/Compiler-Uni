@@ -1,0 +1,42 @@
+program hello ;
+
+(* forward   procedure p0 (zok : integer ) ; *)
+
+forward  function add (ind : integer ) :integer ;
+
+procedure p2();
+	var	yo :integer ;
+		procedure p0 (zok : integer );
+		begin
+		return ;
+		zok := 33 ;	
+		end;
+begin
+yo := 19
+end;
+
+
+function mul(ar : integer) : integer ;
+begin
+ar := 34 ; 
+result := add(23) ;
+return 
+end;
+
+function add (ind : integer) : integer; 
+begin 
+ind := 34 ;
+result := 2 ; 
+return ; 
+result := 2 ;
+return ; 
+result :=  mul (4); 
+return ; 
+end;
+
+
+
+
+
+begin
+end.

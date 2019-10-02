@@ -1,0 +1,18 @@
+program re;
+    var  int : integer ;
+    label  rea ;
+
+    procedure nothing (int : ^char) ;
+        label reaal ;
+    begin
+         reaal : ;
+        goto reaal ; 
+    end;
+
+
+begin
+    (* id  stmt *)
+  rea:  int:= 4 ;
+   goto rea ;  
+
+end.
