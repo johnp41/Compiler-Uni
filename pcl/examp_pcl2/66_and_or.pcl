@@ -1,0 +1,12 @@
+program and_or ;
+var A , B : boolean ;
+
+begin
+
+    A := true ;
+
+    if (A and readBoolean()) then writeString("I am here ");
+    if (A or readBoolean()) then writeString("I am here again ");
+
+
+end.

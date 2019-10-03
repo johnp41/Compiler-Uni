@@ -1,0 +1,37 @@
+(* a program that gets an int and checks is positive negative or 0*)
+
+program Nested_if;
+var arithmos : integer ;
+    vrika_thetiko , vrika_mhden , vrika_arnhtiko : boolean ;
+
+begin
+
+vrika_arnhtiko := false ;
+vrika_thetiko := false ;
+vrika_mhden := false ;
+
+writeString("Give me an integer and am gonna check it  ");
+arithmos := readInteger() ;
+
+if arithmos > 0 
+    then vrika_thetiko := true
+    else if arithmos = 0 
+        then vrika_mhden := true
+        else vrika_arnhtiko := true ;
+
+writeString("Is it positive.. ");
+writeBoolean(vrika_thetiko);
+writeString("\n");
+
+writeString("Is it negative.. ");
+writeBoolean(vrika_arnhtiko);
+writeString("\n");
+
+writeString("Is it zero.. ");
+writeBoolean(vrika_mhden);
+writeString("\n");
+
+
+
+
+end.

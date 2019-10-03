@@ -1,0 +1,29 @@
+(* a program to check dispose *)
+program dis; 
+
+var a , v : ^ char ;
+
+var ar_ptr : ^ array of char ;
+
+begin 
+
+new a ;
+
+if(a <> nil ) then  writeString("a is not nil \n");
+dispose a ;
+
+if(a = nil ) then  writeString("a is nil now \n");
+
+new [3] ar_ptr ;
+
+if(ar_ptr <> nil ) then  writeString("ar_ptr is not nil \n");
+
+dispose [] ar_ptr ;
+
+
+if(ar_ptr = nil ) then  writeString("ar_ptr is nil now \n");
+
+
+
+
+end.
