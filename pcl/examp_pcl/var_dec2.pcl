@@ -1,9 +1,0 @@
-program  hello ;
-var number : integer;
-var number2 : real ;
-var arr : array [80] of char ;
-var arr_2 : array of  boolean ;
-var arr_3 : array [60] of ^real ;
-var arr_4 : array of  array [10] of ^char ;
-begin 
-end.

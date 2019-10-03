@@ -1,9 +1,0 @@
-program hello ;
-
-function add(a :integer ; b : real  ) : integer ;
-begin
-end ;
-
-begin
-add(2 , 2.3 );
-end.

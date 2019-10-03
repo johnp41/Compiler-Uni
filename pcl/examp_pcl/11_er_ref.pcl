@@ -1,7 +1,0 @@
-program g ;
-
-var point_int : ^integer;
-
-begin
-    point_int := nil ;
-end.
