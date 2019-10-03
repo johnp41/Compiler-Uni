@@ -140,7 +140,7 @@ void compile(Program* prog){
     // Reassociate expressions.
     TheFPM->add(llvm::createReassociatePass());
     // Eliminate Common SubExpressions.
-    TheFPM->add(llvm::createGVNPass(true));
+    TheFPM->add(llvm::createGVNPass(false));
     // Simplify the control flow graph (deleting unreachable blocks, etc).
     TheFPM->add(llvm::createCFGSimplificationPass());
     
@@ -186,7 +186,7 @@ void compile(Program* prog){
     
     
     // IR before opts
-    TheModule->print(llvm::outs(), nullptr);
+  //  TheModule->print(llvm::outs(), nullptr);
     
     
     //cout<<"----------------------------------------------------------------"<<endl;
@@ -196,7 +196,7 @@ void compile(Program* prog){
     // Optimizations 
     TheFPM->run(*main);
     // Print out the IR after FPM opts
-   //* TheModule->print(llvm::outs(), nullptr);
+    TheModule->print(llvm::outs(), nullptr);
     return;
 }
 
@@ -696,8 +696,8 @@ llvm::Value* codegenStmt(Stmt* stmt){
                if((BB->getName().str().compare(stmt->b->id)) == 0) {
                     flag = true ;
                     Builder.CreateBr(BB);
-                    //llvm::BasicBlock* BB2 = llvm::BasicBlock::Create(TheContext,"",TheFunction);
-                   // Builder.SetInsertPoint(BB2);
+                    llvm::BasicBlock* BB2 = llvm::BasicBlock::Create(TheContext,"",TheFunction);
+                    Builder.SetInsertPoint(BB2);
                     break ;    
                 }
                 
@@ -710,8 +710,8 @@ if(!flag)    {
             
             auto CrBlock = llvm::BasicBlock::Create(TheContext,stmt->b->id,TheFunction);
             Builder.CreateBr(CrBlock);
-            //llvm::BasicBlock* BB3 = llvm::BasicBlock::Create(TheContext,"",TheFunction);
-            //Builder.SetInsertPoint(BB3);
+            llvm::BasicBlock* BB3 = llvm::BasicBlock::Create(TheContext,"",TheFunction);
+            Builder.SetInsertPoint(BB3);
 
         } 
 

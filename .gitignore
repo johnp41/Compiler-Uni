@@ -1,2 +1,6 @@
 examp_pcl/
 .vscode/
+*.o
+*.ll
+*.s
+pcl
