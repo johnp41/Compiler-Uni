@@ -6,3 +6,4 @@ examp_pcl/
 parser.output
 *.asm
 *imm
+parser.tab*
