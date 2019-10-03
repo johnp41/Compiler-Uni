@@ -1,7 +1,7 @@
 CXX = g++-8
-CXXFLAGS = -Wall -Wextra -std=c++11 -g 
+CXXFLAGS = -Wall -Wextra -std=c++11 
 C = gcc-8
-CFLAGS = -std=c11 -Wall -g
+CFLAGS = -std=c11 -Wall 
 DEPS = my-ast.hpp symbol.h
 LLVMFLAGS =`llvm-config-6.0 --cxxflags --ldflags --libs all --system-libs`
 default:pcl lib

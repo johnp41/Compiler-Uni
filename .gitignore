@@ -3,4 +3,6 @@ examp_pcl/
 *.o
 *.ll
 *.s
-pcl
+parser.output
+*.asm
+*imm

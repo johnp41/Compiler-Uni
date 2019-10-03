@@ -33,14 +33,26 @@ fi
 
 
 echo "Compiling $file "
-./pcl < $file > pcl-ir.ll || exit 1
+./pcl < $file > pcl-ir.imm || exit 1
 echo "Waiting for optimizations"
-opt-6.0 $optf pcl-ir.ll -S -o pcl-ir-opt.ll
-echo "Time to use the assembler"
+opt-6.0 $optf pcl-ir.imm -S -o pcl-ir-opt.imm
 
-llc-6.0 $optf pcl-ir-opt.ll -o pcl-assemb.s
+if [ "$irout" = true ]
+then
+    cat pcl-ir-opt.imm
+fi
 
-clang++-6.0 pcl-assemb.s ./edsger_lib/lib.a -o a.out
 
+echo "Time to use the assembler "
+
+
+llc-6.0 $optf pcl-ir-opt.imm -o pcl-assemb.asm
+
+if [ "$asmout" = true ]
+then
+    cat pcl-assemb.asm
+fi
+
+clang++-6.0 pcl-assemb.asm ./edsger_lib/lib.a -o a.out
 
 exit 0

@@ -1,0 +1,17 @@
+program opt ;
+
+var i : integer ;
+var z : integer;
+
+begin
+
+(* constant expr*)
+i := 3 + 6 ;
+
+(* dead code elimination *)
+if(false ) then i := 636 ;
+
+(* constant expr*)
+z := 50 + i ;
+
+end.

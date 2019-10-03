@@ -4,10 +4,11 @@ PCL is a programming language created for the compilers class in NTUA. The lexer
 
 ## Dependencies :
 ```
-LLVM 6.0
+LLVM 6.0 (opt,llc)
 flex 2.5.39
 bison 3.0.4
 g++-8 gcc-8
+clang++-6.0
 ```
 
 ## Building :
